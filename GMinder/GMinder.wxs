@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+    <Product Id="{12a33fa1-3d10-4e95-aea1-b13a910a0bd8}" Name="GMinder" Language="1033" Version="1.3.1" Manufacturer="Reflective Code" UpgradeCode="0a2e3879-e481-4bdc-b467-081914a311f0">
+        <Package Description="GMinder" InstallerVersion="200" Compressed="yes" Comments="System tray reminders for Google Calendar" />
+        <Media Id="1" Cabinet="GMinder.cab" EmbedCab="yes" />
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder" Name="Program Files">
+                <Directory Id="RELEASE" Name="GMinder">
+                    <Component Id="GMINDER.EXE" DiskId="1" Guid="221480B6-DC48-4328-A95C-680796A2568E">
+                        <File Id="GMINDER.EXE" Name="GMinder.exe" Source="GMinder.exe">
+                            <netfx:NativeImage Id="ngen_MyApplication.exe" Platform="all" Priority="0" />
+                        </File>
+                        <RemoveFolder Id="RELEASE" On="uninstall" />
+                        <Shortcut Id="ExeShortcut" Name="GMinder" Advertise="yes" Directory="ProgramMenuDir" Icon="StartMenuIcon.exe" IconIndex="0" WorkingDirectory="INSTALLDIR" />
+                    </Component>
+                    <Component Id="GMINDER.EXE.CONFIG" DiskId="1" Guid="A632045C-2FEF-49E8-B80B-5BEC2B0CA839">
+                        <File Id="GMINDER.EXE.CONFIG" Name="GMinder.exe.config" Source="GMinder.exe.config" />
+                    </Component>
+                    <Component Id="GMINDER.PDB" DiskId="1" Guid="C36C1CD8-DE49-431D-9D1C-EF3316E500EB">
+                        <File Id="GMINDER.PDB" Name="GMinder.pdb" Source="GMinder.pdb" />
+                    </Component>
+                    <Component Id="GOOGLE.GDATA.ACCESSCONTROL.DLL" DiskId="1" Guid="3ED0E2F4-B786-4B9C-B2FB-D514D2EEAE9A">
+                        <File Id="GOOGLE.GDATA.ACCESSCONTROL.DLL" Name="Google.GData.AccessControl.dll" Source="Google.GData.AccessControl.dll" />
+                    </Component>
+                    <Component Id="GOOGLE.GDATA.CALENDAR.DLL" DiskId="1" Guid="A299F4BC-DE0D-4CF2-94AE-DE9E0D246064">
+                        <File Id="GOOGLE.GDATA.CALENDAR.DLL" Name="Google.GData.Calendar.dll" Source="Google.GData.Calendar.dll" />
+                    </Component>
+                    <Component Id="GOOGLE.GDATA.CLIENT.DLL" DiskId="1" Guid="A32EA619-FE41-4668-B6D9-C53C4FCFD4C3">
+                        <File Id="GOOGLE.GDATA.CLIENT.DLL" Name="Google.GData.Client.dll" Source="Google.GData.Client.dll" />
+                    </Component>
+                    <Component Id="GOOGLE.GDATA.EXTENSIONS.DLL" DiskId="1" Guid="9C3712E8-CA53-4B70-8CCA-949CF1492525">
+                        <File Id="GOOGLE.GDATA.EXTENSIONS.DLL" Name="Google.GData.Extensions.dll" Source="Google.GData.Extensions.dll" />
+                    </Component>
+                    <Component Id="LICENSE.RTF" DiskId="1" Guid="B3DEC67C-6D34-43D1-A4DD-149889630D75">
+                        <File Id="LICENSE.RTF" Name="License.rtf" Source="License.rtf" />
+                    </Component>
+                </Directory>
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ProgramMenuDir" Name="GMinder">
+                    <Component Id="StartMenuShortcut" Guid="D21173AC-CE86-4132-A49B-42F3F6F55E6F">
+                        <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+                    </Component>
+                </Directory>
+            </Directory>
+        </Directory>
+        <Feature Id="GMinderFeature" Title="GMinder" Level="1" Absent="disallow" AllowAdvertise="yes" ConfigurableDirectory="RELEASE" Description="Installs GMinder: A system tray reminder application for Google Calendar." TypicalDefault="advertise" InstallDefault="source" Display="expand">
+            <ComponentRef Id="GMINDER.EXE" />
+            <ComponentRef Id="GMINDER.EXE.CONFIG" />
+            <ComponentRef Id="GMINDER.PDB" />
+            <ComponentRef Id="GOOGLE.GDATA.ACCESSCONTROL.DLL" />
+            <ComponentRef Id="GOOGLE.GDATA.CALENDAR.DLL" />
+            <ComponentRef Id="GOOGLE.GDATA.CLIENT.DLL" />
+            <ComponentRef Id="GOOGLE.GDATA.EXTENSIONS.DLL" />
+            <ComponentRef Id="LICENSE.RTF" />
+            <ComponentRef Id="StartMenuShortcut" />
+        </Feature>
+        <UI>
+            <InstallUISequence>
+                <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">NEWERVERSIONDETECTED</Custom>
+            </InstallUISequence>
+        </UI>
+        <UIRef Id="WixUI_Minimal" />
+        <PropertyRef Id="NETFRAMEWORK20" />
+        <Condition Message="This application requires .NET Framework 2.0.">Installed OR NETFRAMEWORK20</Condition>
+        <Condition Message="Administrative privilege required.">Privileged</Condition>
+        <Icon Id="StartMenuIcon.exe" SourceFile="GMinder.exe" />
+        <Upgrade Id="0a2e3879-e481-4bdc-b467-081914a311f0">
+        </Upgrade>
+        <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+        <CustomAction Error="A newer version of GMinder is installed." Id="CA_BlockOlderVersionInstall" />
+    </Product>
+</Wix>

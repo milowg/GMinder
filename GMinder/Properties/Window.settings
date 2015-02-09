@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="GMinder.Properties" GeneratedClassName="WinProps">
+  <Profiles />
+  <Settings>
+    <Setting Name="PreviewSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)">250, 200</Value>
+    </Setting>
+    <Setting Name="ReminderSize" Type="System.Drawing.Size" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
