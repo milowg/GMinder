@@ -30,6 +30,10 @@ namespace ReflectiveCode.GMinder
 {
     public partial class GReminder : Form
     {
+        public const string REMINDER_TYPE_EMAIL = "email";
+        public const string REMINDER_TYPE_SMS = "sms";
+        public const string REMINDER_TYPE_POPUP = "popup";
+
         const int ONE_MINUTE = 60 * 1000;
 
         private bool _UserExit;
@@ -71,8 +75,16 @@ namespace ReflectiveCode.GMinder
         {
             InitializeComponent();
 
-            SetUserCredentials();
-            Schedule.Current.Load();
+            //Make sure we are not on top of any browser or dialog that happens during the authorzation
+            Calendar.StartingAuth += (sender, args) => { this.TopMost = false; };
+            Calendar.EndingAuth += (sender, args) => { this.TopMost = global::ReflectiveCode.GMinder.Properties.Settings.Default.OnTop; };
+
+            //If we have already established OAuth, load the proper objects
+            if (Properties.Settings.Default.LoggedIn) {
+                Calendar.SetUserCredentials(false);
+                Schedule.Current.Load();
+            }
+            
             Selected = null;
             Schedule.Current.GventChanged += (sender, e) =>
             {
@@ -106,19 +118,6 @@ namespace ReflectiveCode.GMinder
                 Hidden = true;
             }
             base.OnFormClosing(e);
-        }
-
-        private static void SetUserCredentials()
-        {
-            if (!String.IsNullOrEmpty(Properties.Login.Default.Username))
-            {
-                string user = Properties.Login.Default.Username;
-                string pass = Encryption.Decrypt(Properties.Login.Default.Password);
-
-                Calendar.SetUserCredentials(user, pass);
-
-                pass = null;
-            }
         }
 	
         #region Status Update

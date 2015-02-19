@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Google.Apis.Calendar.v3.Data;
+using System;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Google.GData.Calendar;
-using Google.GData.Extensions;
 
 namespace ReflectiveCode.GMinder
 {
@@ -51,17 +50,17 @@ namespace ReflectiveCode.GMinder
         {
         }
 
-        public GVentMinder(Reminder reminder)
+        public GVentMinder(EventReminder reminder)
         {
             if (reminder == null)
                 throw new ArgumentNullException("entry");
 
-            _HowEarly = new TimeSpan(reminder.Days, reminder.Hours, reminder.Minutes, 0);
+            _HowEarly = TimeSpan.FromMinutes((double)reminder.Minutes);
         }
 
-        public bool Update(Reminder reminder)
+        public bool Update(EventReminder reminder)
         {
-            if (_HowEarly != new TimeSpan(reminder.Days, reminder.Hours, reminder.Minutes, 0))
+            if (_HowEarly != TimeSpan.FromMinutes((double)reminder.Minutes))
                 return false;
 
             Processed = true;

@@ -22,6 +22,7 @@
 /// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 /// OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using Google.Apis.Auth.OAuth2;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -42,9 +43,9 @@ namespace ReflectiveCode.GMinder
         {
             InitializeComponent();
 
-            loginUsernameLabel.Text = Properties.Login.Default.Username;
-
             columnHeader1.Width = calendarList.ClientSize.Width;
+
+            loginButton.Text = Properties.Settings.Default.LoggedIn ? "Reset Login" : "Login";
 
             LoadCalendars();
         }
@@ -58,7 +59,7 @@ namespace ReflectiveCode.GMinder
                 if (calendars.Contains(calendar))
                 {
                     calendar.Name = calendarNames[calendar];
-                    calendar.Url = calendarUrls[calendar];
+                    calendar.ID = calendarUrls[calendar];
                     calendar.Color = calendarColors[calendar];
                     calendar.Enabled = calendarActive[calendar];
                 }
@@ -75,7 +76,7 @@ namespace ReflectiveCode.GMinder
                 if (!Schedule.Current.Contains(calendar))
                 {
                     calendar.Name = calendarNames[calendar];
-                    calendar.Url = calendarUrls[calendar];
+                    calendar.ID = calendarUrls[calendar];
                     calendar.Color = calendarColors[calendar];
                     calendar.Enabled = calendarActive[calendar];
                     Schedule.Current.Add(calendar);
@@ -90,10 +91,24 @@ namespace ReflectiveCode.GMinder
 
         private void loginSet_Click(object sender, EventArgs e)
         {
-            Account login = new Account();
-            login.ShowDialog(this);
-            login.Dispose();
-            loginUsernameLabel.Text = Properties.Login.Default.Username;
+            MessageBox.Show(
+                "A web browser will now be opened to allow you to accept giving GMinder access to your Calendar.",
+                "Login"
+            );
+
+            if (Calendar.SetUserCredentials(true))
+            {
+                //Clear calendars
+                foreach (var calendar in calendars) {
+                    RemoveCalendar(calendar);
+                }
+                calendarList.Items.Clear();
+
+                MessageBox.Show(
+                    "Your account information has been set. Click Download to import your calendars.",
+                    "Success"
+                );
+            }
         }
 
         #endregion
@@ -110,7 +125,7 @@ namespace ReflectiveCode.GMinder
                 calendars.Add(calendar);
 
                 calendarNames.Add(calendar, calendar.Name);
-                calendarUrls.Add(calendar, calendar.Url);
+                calendarUrls.Add(calendar, calendar.ID);
                 calendarColors.Add(calendar, calendar.Color);
                 calendarActive.Add(calendar, calendar.Enabled);
 
@@ -131,7 +146,7 @@ namespace ReflectiveCode.GMinder
 
                 foreach (Calendar oldCal in calendars)
                 {
-                    if (newCal.Url == calendarUrls[oldCal])
+                    if (newCal.ID == calendarUrls[oldCal])
                     {
                         isNew = false;
                         break;
@@ -143,7 +158,7 @@ namespace ReflectiveCode.GMinder
                     calendars.Add(newCal);
 
                     calendarNames.Add(newCal, newCal.Name);
-                    calendarUrls.Add(newCal, newCal.Url);
+                    calendarUrls.Add(newCal, newCal.ID);
                     calendarColors.Add(newCal, newCal.Color);
                     calendarActive.Add(newCal, newCal.Enabled);
 
@@ -236,6 +251,15 @@ namespace ReflectiveCode.GMinder
             calendarList.Items.Add(item);
         }
 
+        private void RemoveCalendar(Calendar calendar)
+        {
+            calendars.Remove(calendar);
+            calendarNames.Remove(calendar);
+            calendarUrls.Remove(calendar);
+            calendarColors.Remove(calendar);
+            calendarActive.Remove(calendar);
+        }
+
         private void RemoveItem(ListViewItem item)
         {
             if (item != null)
@@ -243,11 +267,7 @@ namespace ReflectiveCode.GMinder
                 Calendar calendar = GetCalendarFromItem(item);
                 if (calendar != null)
                 {
-                    calendars.Remove(calendar);
-                    calendarNames.Remove(calendar);
-                    calendarUrls.Remove(calendar);
-                    calendarColors.Remove(calendar);
-                    calendarActive.Remove(calendar);
+                    RemoveCalendar(calendar);
                 }
                 calendarList.Items.Remove(item);
             }

@@ -13,9 +13,11 @@ namespace ReflectiveCode.GMinder
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.productNameLabel.Text = AssemblyProduct;
             this.versionLabel.Text = String.Format("Version {0}", AssemblyVersion);
-            this.copyrightLabel.Text = AssemblyCopyright;
-            this.companyNameLabel.Text = AssemblyCompany;
             this.descriptionTextBox.Text = AssemblyDescription;
+
+            this.linkLatest.LinkClicked += (sender, e) => link_LinkClicked(sender);
+            this.linkOlder.LinkClicked += (sender, e) => link_LinkClicked(sender);
+            this.linkOldest.LinkClicked += (sender, e) => link_LinkClicked(sender);
         }
 
         #region Assembly Attribute Accessors
@@ -98,13 +100,9 @@ namespace ReflectiveCode.GMinder
         }
         #endregion
 
-        private void labelCompanyName_Click(object sender, EventArgs e)
+        private void link_LinkClicked(Object sender)
         {
-            try
-            {
-                Process.Start("http://reflectivecode.com");
-            }
-            catch { }
+            System.Diagnostics.Process.Start(((LinkLabel)sender).Text);
         }
     }
 }

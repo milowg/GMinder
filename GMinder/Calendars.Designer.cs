@@ -32,9 +32,7 @@ namespace ReflectiveCode.GMinder
             this.CalendarsFormTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.loginGroupBox = new System.Windows.Forms.GroupBox();
             this.loginSettingsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.usernameLabel = new System.Windows.Forms.Label();
-            this.loginUsernameLabel = new System.Windows.Forms.Label();
-            this.loginSetButton = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
             this.calendarsGroupBox = new System.Windows.Forms.GroupBox();
             this.calendardsTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.calendarNameLabel = new System.Windows.Forms.Label();
@@ -85,7 +83,7 @@ namespace ReflectiveCode.GMinder
             this.loginGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.loginGroupBox.Location = new System.Drawing.Point(3, 3);
             this.loginGroupBox.Name = "loginGroupBox";
-            this.loginGroupBox.Size = new System.Drawing.Size(449, 61);
+            this.loginGroupBox.Size = new System.Drawing.Size(449, 48);
             this.loginGroupBox.TabIndex = 0;
             this.loginGroupBox.TabStop = false;
             this.loginGroupBox.Text = "Login";
@@ -93,52 +91,31 @@ namespace ReflectiveCode.GMinder
             // loginSettingsFlowLayoutPanel
             // 
             this.loginSettingsFlowLayoutPanel.AutoSize = true;
-            this.loginSettingsFlowLayoutPanel.Controls.Add(this.usernameLabel);
-            this.loginSettingsFlowLayoutPanel.Controls.Add(this.loginUsernameLabel);
-            this.loginSettingsFlowLayoutPanel.Controls.Add(this.loginSetButton);
+            this.loginSettingsFlowLayoutPanel.Controls.Add(this.loginButton);
             this.loginSettingsFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.loginSettingsFlowLayoutPanel.Location = new System.Drawing.Point(3, 16);
             this.loginSettingsFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.loginSettingsFlowLayoutPanel.Name = "loginSettingsFlowLayoutPanel";
-            this.loginSettingsFlowLayoutPanel.Size = new System.Drawing.Size(443, 42);
+            this.loginSettingsFlowLayoutPanel.Size = new System.Drawing.Size(443, 29);
             this.loginSettingsFlowLayoutPanel.TabIndex = 0;
             // 
-            // usernameLabel
+            // loginButton
             // 
-            this.usernameLabel.AutoSize = true;
-            this.usernameLabel.Location = new System.Drawing.Point(3, 0);
-            this.usernameLabel.Name = "usernameLabel";
-            this.usernameLabel.Size = new System.Drawing.Size(58, 13);
-            this.usernameLabel.TabIndex = 0;
-            this.usernameLabel.Text = "Username:";
-            // 
-            // loginUsernameLabel
-            // 
-            this.loginUsernameLabel.AutoSize = true;
-            this.loginSettingsFlowLayoutPanel.SetFlowBreak(this.loginUsernameLabel, true);
-            this.loginUsernameLabel.Location = new System.Drawing.Point(67, 0);
-            this.loginUsernameLabel.Name = "loginUsernameLabel";
-            this.loginUsernameLabel.Size = new System.Drawing.Size(53, 13);
-            this.loginUsernameLabel.TabIndex = 1;
-            this.loginUsernameLabel.Text = "username";
-            // 
-            // loginSetButton
-            // 
-            this.loginSetButton.Location = new System.Drawing.Point(3, 16);
-            this.loginSetButton.Name = "loginSetButton";
-            this.loginSetButton.Size = new System.Drawing.Size(75, 23);
-            this.loginSetButton.TabIndex = 2;
-            this.loginSetButton.Text = "Set";
-            this.loginSetButton.UseVisualStyleBackColor = true;
-            this.loginSetButton.Click += new System.EventHandler(this.loginSet_Click);
+            this.loginButton.Location = new System.Drawing.Point(3, 3);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(75, 23);
+            this.loginButton.TabIndex = 2;
+            this.loginButton.Text = "Login";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginSet_Click);
             // 
             // calendarsGroupBox
             // 
             this.calendarsGroupBox.Controls.Add(this.calendardsTableLayoutPanel);
             this.calendarsGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.calendarsGroupBox.Location = new System.Drawing.Point(3, 70);
+            this.calendarsGroupBox.Location = new System.Drawing.Point(3, 57);
             this.calendarsGroupBox.Name = "calendarsGroupBox";
-            this.calendarsGroupBox.Size = new System.Drawing.Size(449, 252);
+            this.calendarsGroupBox.Size = new System.Drawing.Size(449, 265);
             this.calendarsGroupBox.TabIndex = 1;
             this.calendarsGroupBox.TabStop = false;
             this.calendarsGroupBox.Text = "Calendars";
@@ -165,14 +142,14 @@ namespace ReflectiveCode.GMinder
             this.calendardsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.calendardsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.calendardsTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.calendardsTableLayoutPanel.Size = new System.Drawing.Size(443, 233);
+            this.calendardsTableLayoutPanel.Size = new System.Drawing.Size(443, 246);
             this.calendardsTableLayoutPanel.TabIndex = 0;
             // 
             // calendarNameLabel
             // 
             this.calendarNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.calendarNameLabel.AutoSize = true;
-            this.calendarNameLabel.Location = new System.Drawing.Point(3, 123);
+            this.calendarNameLabel.Location = new System.Drawing.Point(3, 136);
             this.calendarNameLabel.Name = "calendarNameLabel";
             this.calendarNameLabel.Size = new System.Drawing.Size(35, 13);
             this.calendarNameLabel.TabIndex = 1;
@@ -182,7 +159,7 @@ namespace ReflectiveCode.GMinder
             // 
             this.calendarColorLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.calendarColorLabel.AutoSize = true;
-            this.calendarColorLabel.Location = new System.Drawing.Point(3, 177);
+            this.calendarColorLabel.Location = new System.Drawing.Point(3, 190);
             this.calendarColorLabel.Name = "calendarColorLabel";
             this.calendarColorLabel.Size = new System.Drawing.Size(31, 13);
             this.calendarColorLabel.TabIndex = 5;
@@ -192,7 +169,7 @@ namespace ReflectiveCode.GMinder
             // 
             this.calendarUrlLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.calendarUrlLabel.AutoSize = true;
-            this.calendarUrlLabel.Location = new System.Drawing.Point(3, 149);
+            this.calendarUrlLabel.Location = new System.Drawing.Point(3, 162);
             this.calendarUrlLabel.Name = "calendarUrlLabel";
             this.calendarUrlLabel.Size = new System.Drawing.Size(20, 13);
             this.calendarUrlLabel.TabIndex = 3;
@@ -206,7 +183,7 @@ namespace ReflectiveCode.GMinder
             this.calendarsEditFlowLayoutPanel.Controls.Add(this.calendarRemoveButton);
             this.calendarsEditFlowLayoutPanel.Controls.Add(this.calendarDownloadButton);
             this.calendarsEditFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.calendarsEditFlowLayoutPanel.Location = new System.Drawing.Point(3, 201);
+            this.calendarsEditFlowLayoutPanel.Location = new System.Drawing.Point(3, 214);
             this.calendarsEditFlowLayoutPanel.Name = "calendarsEditFlowLayoutPanel";
             this.calendarsEditFlowLayoutPanel.Size = new System.Drawing.Size(437, 29);
             this.calendarsEditFlowLayoutPanel.TabIndex = 7;
@@ -245,7 +222,7 @@ namespace ReflectiveCode.GMinder
             // 
             this.calendarNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.calendarNameTextBox.Location = new System.Drawing.Point(44, 120);
+            this.calendarNameTextBox.Location = new System.Drawing.Point(44, 133);
             this.calendarNameTextBox.Name = "calendarNameTextBox";
             this.calendarNameTextBox.Size = new System.Drawing.Size(396, 20);
             this.calendarNameTextBox.TabIndex = 2;
@@ -255,7 +232,7 @@ namespace ReflectiveCode.GMinder
             // 
             this.calendarUrlTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.calendarUrlTextBox.Location = new System.Drawing.Point(44, 146);
+            this.calendarUrlTextBox.Location = new System.Drawing.Point(44, 159);
             this.calendarUrlTextBox.Name = "calendarUrlTextBox";
             this.calendarUrlTextBox.Size = new System.Drawing.Size(396, 20);
             this.calendarUrlTextBox.TabIndex = 4;
@@ -274,7 +251,7 @@ namespace ReflectiveCode.GMinder
             this.calendarList.Location = new System.Drawing.Point(3, 3);
             this.calendarList.MultiSelect = false;
             this.calendarList.Name = "calendarList";
-            this.calendarList.Size = new System.Drawing.Size(437, 111);
+            this.calendarList.Size = new System.Drawing.Size(437, 124);
             this.calendarList.TabIndex = 0;
             this.calendarList.UseCompatibleStateImageBehavior = false;
             this.calendarList.View = System.Windows.Forms.View.Details;
@@ -298,7 +275,7 @@ namespace ReflectiveCode.GMinder
             this.calendarColorBox.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Black;
             this.calendarColorBox.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Black;
             this.calendarColorBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.calendarColorBox.Location = new System.Drawing.Point(44, 172);
+            this.calendarColorBox.Location = new System.Drawing.Point(44, 185);
             this.calendarColorBox.Name = "calendarColorBox";
             this.calendarColorBox.Size = new System.Drawing.Size(396, 23);
             this.calendarColorBox.TabIndex = 6;
@@ -358,7 +335,6 @@ namespace ReflectiveCode.GMinder
             this.loginGroupBox.ResumeLayout(false);
             this.loginGroupBox.PerformLayout();
             this.loginSettingsFlowLayoutPanel.ResumeLayout(false);
-            this.loginSettingsFlowLayoutPanel.PerformLayout();
             this.calendarsGroupBox.ResumeLayout(false);
             this.calendardsTableLayoutPanel.ResumeLayout(false);
             this.calendardsTableLayoutPanel.PerformLayout();
@@ -373,9 +349,7 @@ namespace ReflectiveCode.GMinder
         private System.Windows.Forms.TableLayoutPanel CalendarsFormTableLayoutPanel;
         private System.Windows.Forms.GroupBox loginGroupBox;
         private System.Windows.Forms.FlowLayoutPanel loginSettingsFlowLayoutPanel;
-        private System.Windows.Forms.Label usernameLabel;
-        private System.Windows.Forms.Label loginUsernameLabel;
-        private System.Windows.Forms.Button loginSetButton;
+        private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.GroupBox calendarsGroupBox;
         private System.Windows.Forms.FlowLayoutPanel okCancelFlowLayoutPanel;
         private System.Windows.Forms.Button cancelButton;

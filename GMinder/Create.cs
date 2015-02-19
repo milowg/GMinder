@@ -25,9 +25,9 @@
 /// Special thanks to Dan at http://rowdypixel.com
 /// for offering some code to get this started
 
+using Google.Apis.Calendar.v3.Data;
 using System;
 using System.Windows.Forms;
-using Google.GData.Calendar;
 
 namespace ReflectiveCode.GMinder
 {
@@ -59,14 +59,10 @@ namespace ReflectiveCode.GMinder
             var calendar = calendarList.SelectedItem as Calendar;
             if (calendar == null)
                 return;
-
-            var newEntry = new EventEntry();
-            newEntry.QuickAdd = true;
-            newEntry.Content.Content = newEventNameTextBox.Text;
-
+            
             try
             {
-                calendar.Create(newEntry);
+                calendar.Create(newEventNameTextBox.Text);
                 Close();
             }
             catch (Exception ex)

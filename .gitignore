@@ -43,7 +43,11 @@ _ReSharper*/
 
 #NuGet
 packages/
+.nuget
 
 #VS Upgrade
 _UpgradeReport_Files/
 UpgradeLog.XML
+
+#Secret Key Info
+GMinderClientSecrets.cs

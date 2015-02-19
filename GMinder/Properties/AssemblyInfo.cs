@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GMinder")]
 [assembly: AssemblyDescription("System tray reminders for Google Calendar")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ReflectiveCode.com")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GMinder")]
 [assembly: AssemblyCopyright("Copyright © Greg Todd 2009")]
 [assembly: AssemblyTrademark("")]
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.1")]
-[assembly: AssemblyFileVersion("1.3.1")]
+[assembly: AssemblyVersion("1.4")]
+[assembly: AssemblyFileVersion("1.4")]

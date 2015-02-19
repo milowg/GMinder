@@ -55,6 +55,11 @@ namespace ReflectiveCode.GMinder
             logMessage.Append(prefix);
             logMessage.AppendLine(e.Message);
 
+            if (e.InnerException != null)
+            {
+                logMessage.AppendLine("  " + e.InnerException.Message);
+            }
+
             // Open the log file for writing
             Storage.AppendText(ERROR_LOG, logMessage.ToString());
 

@@ -22,6 +22,7 @@
 /// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 /// OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using Google.Apis.Calendar.v3.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -29,8 +30,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using Google.GData.Calendar;
-using Google.GData.Extensions;
+
 
 namespace ReflectiveCode.GMinder
 {
@@ -38,17 +38,7 @@ namespace ReflectiveCode.GMinder
     {
         #region Properties
 
-        private Calendar _Calendar;
-        public Calendar Calendar
-        {
-            get { return _Calendar; }
-            set
-            {
-                if (_Calendar == null)
-                    _Calendar = value;
-                else throw new InvalidOperationException("A Gvent's owning Calendar cannot be changed");
-            }
-        }
+        public Calendar Calendar {get; private set; }
 
         private List<GVentMinder> _Minders = new List<GVentMinder>();
 
@@ -207,12 +197,13 @@ namespace ReflectiveCode.GMinder
 
         #endregion
 
-        public Gvent(EventEntry entry)
+        public Gvent(Event entry, Calendar calendar)
         {
             if (entry == null)
                 throw new ArgumentNullException("entry");
 
-            _Id = entry.Id.AbsoluteUri;
+            _Id = entry.HtmlLink;
+            this.Calendar = calendar;
             Update(entry);
         }
 
@@ -236,42 +227,71 @@ namespace ReflectiveCode.GMinder
             NotifyChange(new GventEventArgs(this, GventChanges.DeletedReminder));
         }
 
-        public bool Update(EventEntry entry)
+        public bool Update(Event entry)
         {
-            if (entry.Id.AbsoluteUri != Id)
+            if (entry.HtmlLink != Id)
                 return false;
 
-            Title = entry.Title.Text;
-            Url = entry.Links[0].HRef.Content;
+            Title = entry.Summary;
+            Url = entry.HtmlLink;
 
             // Location
-            if (entry.Locations.Count > 0)
-                Location = entry.Locations[0].ValueString;
-            else
-                Location = null;
+            Location = entry.Location;
 
             // Times
-            Stop = entry.Times[0].EndTime;
-            Start = entry.Times[0].StartTime;
+
+            if (entry.Start.DateTime == null)
+            {
+                Start = DateTime.Parse(entry.Start.Date);
+            }
+            else
+            {
+                Start = entry.Start.DateTime ?? new DateTime();
+            }
+
+            if (entry.End.DateTime == null)
+            {
+                Stop = DateTime.Parse(entry.End.Date);
+            }
+            else
+            {
+                Stop = entry.End.DateTime ?? new DateTime();
+            }            
 
             foreach (var gminder in _Minders)
                 gminder.Processed = false;
-
-            foreach (var reminder in entry.Reminders)
+            
+            IList<EventReminder> reminders = null;
+            if (entry.Reminders != null)
             {
-                if (reminder.Method == Reminder.ReminderMethod.alert)
+                if (entry.Reminders.UseDefault == true)
                 {
-                    bool matched = false;
+                    reminders = this.Calendar.DefaultReminders;
+                }
+                else
+                {
+                    reminders = entry.Reminders.Overrides;
+                }
+            }
 
-                    foreach (var minder in _Minders)
+            if (reminders != null)
+            {
+                foreach (var reminder in reminders)
+                {
+                    if (reminder.Method == GReminder.REMINDER_TYPE_POPUP)
                     {
-                        matched = minder.Update(reminder);
-                        if (matched)
-                            break;
-                    }
+                        bool matched = false;
 
-                    if (!matched)
-                        Add(new GVentMinder(reminder));
+                        foreach (var minder in _Minders)
+                        {
+                            matched = minder.Update(reminder);
+                            if (matched)
+                                break;
+                        }
+
+                        if (!matched)
+                            Add(new GVentMinder(reminder));
+                    }
                 }
             }
 
@@ -330,7 +350,7 @@ namespace ReflectiveCode.GMinder
                 }
                 catch (Exception e)
                 {
-                    Logging.LogException(false, e, 
+                    Logging.LogException(false, e,
                         "Error opening event in browser",
                         String.Format("Event: {0}", Title),
                         String.Format("Url: {0}", Url));
@@ -364,7 +384,10 @@ namespace ReflectiveCode.GMinder
 
         #region Serialization
 
-        public Gvent() { }
+        public Gvent(Calendar calendar) 
+        {
+            this.Calendar = calendar;
+        }
 
         public XmlSchema GetSchema()
         {
@@ -381,7 +404,7 @@ namespace ReflectiveCode.GMinder
                 _Start = DateTime.FromBinary(Int64.Parse(reader["Start"]));
                 _Stop = DateTime.FromBinary(Int64.Parse(reader["Stop"]));
                 _Url = reader["Url"];
-                _Status = (GventStatus)Int32.Parse(reader["Status"]);
+                _Status = (GventStatus)Int32.Parse(reader["Status"]);                
 
                 if (reader.ReadToDescendant("Reminder"))
                 {
@@ -392,6 +415,7 @@ namespace ReflectiveCode.GMinder
                         Add(minder);
                     }
                 }
+
                 reader.Read();
             }
         }

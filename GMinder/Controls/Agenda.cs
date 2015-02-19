@@ -53,6 +53,12 @@ namespace ReflectiveCode.GMinder.Controls
             if (gvent.Status == GventStatus.Dismissed)
                 return;
 
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<Gvent>(this.Add), gvent);
+                return;
+            }
+
             // Create a new Item for the gvent
             var item = new ListViewItem();
             _Gvents.Add(gvent, item);
@@ -186,6 +192,12 @@ namespace ReflectiveCode.GMinder.Controls
 
         private void Remove(Gvent gvent)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<Gvent>(this.Remove), gvent);
+                return;
+            }
+
             if (_Gvents.ContainsKey(gvent))
             {
                 ListViewItem item = _Gvents[gvent];
@@ -278,6 +290,12 @@ namespace ReflectiveCode.GMinder.Controls
 
         private void UpdateGvent(Gvent gvent, GventChanges change)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action<Gvent, GventChanges>(this.UpdateGvent), gvent, change);
+                return;
+            }
+
             switch (change)
             {
                 case GventChanges.Start:
@@ -451,6 +469,18 @@ namespace ReflectiveCode.GMinder.Controls
                 if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
                     Selected.Dismiss();
             base.OnKeyDown(e);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            Schedule.Current.Redrawing -= (sender, e) => Reset();
+            Schedule.Current.BeginningUpdate -= (sender, e) => SafeBeginUpdate();
+            Schedule.Current.EndingUpdate -= (sender, e) => SafeEndUpdate();
+            Schedule.Current.GventAdded -= (sender, e) => Add(e.Gvent);
+            Schedule.Current.GventRemoved -= (sender, e) => Remove(e.Gvent);
+            Schedule.Current.GventChanged -= (sender, e) => UpdateGvent(e.Gvent, e.Changes);
+
+            base.Dispose(disposing);
         }
 
         #endregion
