@@ -22,22 +22,7 @@ namespace ReflectiveCode.GMinder.Properties {
                 return defaultInstance;
             }
         }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("false")]
-        public bool LoggedIn
-        {
-            get
-            {
-                return ((bool)(this["LoggedIn"]));
-            }
-            set
-            {
-                this["LoggedIn"] = value;
-            }
-        }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
@@ -239,6 +224,18 @@ namespace ReflectiveCode.GMinder.Properties {
             }
             set {
                 this["NowVerbal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LoggedIn {
+            get {
+                return ((bool)(this["LoggedIn"]));
+            }
+            set {
+                this["LoggedIn"] = value;
             }
         }
     }
