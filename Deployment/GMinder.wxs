@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='windows-1252'?>
+<Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+	<?include "source.wxi"?>
+
+	<Product Name='GMinder 1.4' Id='*' UpgradeCode='230C4B64-F983-4630-B427-D1EAE885FD62'
+    Language='1033' Codepage='1252' Version='1.4' Manufacturer='GMinder'>
+
+		<Package Id='*' Keywords='Installer' Description="GMinder 1.4 Installer"
+      Comments='Google Calendar Reminder' Manufacturer='GMinder'
+      InstallerVersion='300' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
+		<Media Id="1" Cabinet="gminder.cab" EmbedCab="yes"/>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="INSTALLDIR" Name="GMinder">
+					<Component Id="GMinder" Guid="630243ad-54ac-42ea-9a4d-d296011127df">
+						<File Id='GMinder.exe' Name='GMinder.exe' DiskId='1' Source='$(var.SourceDir)\GMinder.exe' KeyPath='yes'/>												
+						<File Id='License.rtf' Name='License.rtf' DiskId='1' Source='$(var.SourceDir)\License.rtf'/>						
+						<File Id="Google.Apis.Auth.dll" Source="$(var.SourceDir)\Google.Apis.Auth.dll" />
+						<File Id="Google.Apis.Auth.PlatformServices.dll" Source="$(var.SourceDir)\Google.Apis.Auth.PlatformServices.dll" />
+						<File Id="Google.Apis.Calendar.v3.dll" Source="$(var.SourceDir)\Google.Apis.Calendar.v3.dll" />
+						<File Id="Google.Apis.Core.dll" Source="$(var.SourceDir)\Google.Apis.Core.dll" />
+						<File Id="Google.Apis.dll" Source="$(var.SourceDir)\Google.Apis.dll" />
+						<File Id="Google.Apis.PlatformServices.dll" Source="$(var.SourceDir)\Google.Apis.PlatformServices.dll" />
+						<File Id="log4net.dll" Source="$(var.SourceDir)\log4net.dll" />
+						<File Id="Microsoft.Threading.Tasks.dll" Source="$(var.SourceDir)\Microsoft.Threading.Tasks.dll" />
+						<File Id="Microsoft.Threading.Tasks.Extensions.Desktop.dll" Source="$(var.SourceDir)\Microsoft.Threading.Tasks.Extensions.Desktop.dll" />
+						<File Id="Microsoft.Threading.Tasks.Extensions.dll" Source="$(var.SourceDir)\Microsoft.Threading.Tasks.Extensions.dll" />
+						<File Id="Newtonsoft.Json.dll" Source="$(var.SourceDir)\Newtonsoft.Json.dll" />
+						<File Id="System.IO.dll" Source="$(var.SourceDir)\System.IO.dll" />
+						<File Id="System.Net.Http.dll" Source="$(var.SourceDir)\System.Net.Http.dll" />
+						<File Id="System.Net.Http.Extensions.dll" Source="$(var.SourceDir)\System.Net.Http.Extensions.dll" />
+						<File Id="System.Net.Http.Primitives.dll" Source="$(var.SourceDir)\System.Net.Http.Primitives.dll" />
+						<File Id="System.Net.Http.WebRequest.dll" Source="$(var.SourceDir)\System.Net.Http.WebRequest.dll" />
+						<File Id="System.Runtime.dll" Source="$(var.SourceDir)\System.Runtime.dll" />
+						<File Id="System.Threading.Tasks.dll" Source="$(var.SourceDir)\System.Threading.Tasks.dll" />
+						<File Id="Zlib.Portable.dll" Source="$(var.SourceDir)\Zlib.Portable.dll" />
+						<File Id="GMinder.exe.config" Source="$(var.SourceDir)\GMinder.exe.config" />
+						<RemoveFolder Id='GMinder' On='uninstall' />
+					</Component>					
+				</Directory>
+			</Directory>
+
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="ProgramMenuSubfolder" Name="GMinder">
+					<Component Id="GMinderShortcuts" Guid="630243ad-54ac-42ea-9a4d-d296011127dd">
+						<Shortcut Id="GMinderShortcut" Name="GMinder" Description="Google Calendar Reminder" 
+                            Target="[INSTALLDIR]GMinder.exe" WorkingDirectory="INSTALLDIR"/>
+						<RegistryValue Root="HKCU" Key="Software\GMinder\GMinder" 
+                            Name="installed" Type="integer" Value="1" KeyPath="yes"/>			
+						<RemoveFolder Id="ProgramMenuSubfolder" On="uninstall"/>
+					</Component>
+				</Directory>
+			</Directory>
+		</Directory>
+		<Feature Id="DefaultFeature" Level="1">
+			<ComponentRef Id="GMinder"/>
+			<ComponentRef Id="GMinderShortcuts"/>
+		</Feature>
+
+		<PropertyRef Id="NETFRAMEWORK40FULL"/>
+		<Condition Message="This application requires .NET Framework 4.0. Please install the .NET Framework then run this installer again.">
+			<![CDATA[Installed OR NETFRAMEWORK40FULL]]>
+		</Condition>
+
+		<CustomAction Id='Launch_GMinder' FileKey='GMinder.exe' ExeCommand='' Return='asyncNoWait' />
+		<InstallExecuteSequence> 
+			<Custom Action="Launch_GMinder" After="InstallFinalize"/> 
+		</InstallExecuteSequence> 
+
+	</Product>
+</Wix>
