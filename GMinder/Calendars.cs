@@ -45,9 +45,13 @@ namespace ReflectiveCode.GMinder
 
             columnHeader1.Width = calendarList.ClientSize.Width;
 
-            loginButton.Text = Properties.Settings.Default.LoggedIn ? "Reset Login" : "Login";
+            SetLoginButtonText();
 
             LoadCalendars();
+        }
+
+        private void SetLoginButtonText() {
+            loginButton.Text = Properties.Settings.Default.LoggedIn ? "Reset Login" : "Login";
         }
 
         private void buttonOk_Click(object sender, EventArgs e)
@@ -104,6 +108,7 @@ namespace ReflectiveCode.GMinder
                 }
                 calendarList.Items.Clear();
 
+                SetLoginButtonText();
                 MessageBox.Show(
                     "Your account information has been set. Click Download to import your calendars.",
                     "Success"

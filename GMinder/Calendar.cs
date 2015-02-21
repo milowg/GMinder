@@ -37,6 +37,7 @@ using System.Threading;
 using Google.Apis.Util.Store;
 using Google.Apis.Services;
 using Google.Apis.Calendar.v3.Data;
+using System.Threading.Tasks;
 
 namespace ReflectiveCode.GMinder
 {
@@ -65,13 +66,20 @@ namespace ReflectiveCode.GMinder
                     fileDataStore.ClearAsync().Wait();
                 }
 
-                UserCredential credential;
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GMinderClientSecrets.getSecret(),
-                    new[] { CalendarService.Scope.Calendar },
-                    "user",
-                    CancellationToken.None,
-                    fileDataStore).Result;
+                var authorizeTask = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                GMinderClientSecrets.getSecret(),
+                new[] { CalendarService.Scope.Calendar },
+                "user",
+                CancellationToken.None,
+                fileDataStore);
+
+                Task.WaitAny(new Task[] { authorizeTask }, 60000);
+                if (!authorizeTask.IsCompleted)
+                {
+                    authorizeTask.Dispose();
+                    throw new Exception("Failed to get authorization within 1 minute");
+                }
+                UserCredential credential = authorizeTask.Result;
 
                 _Service = new CalendarService(new BaseClientService.Initializer()
                 {
@@ -81,6 +89,8 @@ namespace ReflectiveCode.GMinder
 
                 Properties.Settings.Default.LoggedIn = true;
                 Properties.Settings.Default.Save();
+
+                return true;
             }
             catch (Exception e)
             {
@@ -91,12 +101,12 @@ namespace ReflectiveCode.GMinder
                 );
 
                 Logging.LogException(false, e, "Unknown Error: " + e.Message);
+                return false;
             }
             finally
             {
                 OnEndingAuth();
-            }
-            return true;
+            }            
         }
 
         public static IEnumerable<Calendar> DownloadCalendars()

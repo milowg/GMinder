@@ -13,7 +13,7 @@ namespace ReflectiveCode.GMinder
             this.Text = String.Format("About {0}", AssemblyTitle);
             this.productNameLabel.Text = AssemblyProduct;
             this.versionLabel.Text = String.Format("Version {0}", AssemblyVersion);
-            this.descriptionTextBox.Text = AssemblyDescription;
+            this.description.Text = AssemblyDescription;
 
             this.linkLatest.LinkClicked += (sender, e) => link_LinkClicked(sender);
             this.linkOlder.LinkClicked += (sender, e) => link_LinkClicked(sender);
