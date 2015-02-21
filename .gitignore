@@ -1,4 +1,3 @@
-*.exe
 *.user
 *.aps
 *.pch
@@ -43,7 +42,6 @@ _ReSharper*/
 
 #NuGet
 packages/
-.nuget
 
 #VS Upgrade
 _UpgradeReport_Files/
