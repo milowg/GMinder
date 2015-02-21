@@ -1,0 +1,1 @@
+heat dir ..\GMinder\bin\Release\ -sfrag -scom -sreg -suid -ag -var var.SourceDir -t harvest.xsl -o harvest.wxs
