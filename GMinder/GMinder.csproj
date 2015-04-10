@@ -240,9 +240,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>Reminder.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="GMinder.wxs">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="License.rtf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

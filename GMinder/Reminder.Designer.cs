@@ -174,7 +174,6 @@ namespace ReflectiveCode.GMinder
             this.eventWhat.Size = new System.Drawing.Size(37, 18);
             this.eventWhat.TabIndex = 0;
             this.eventWhat.Text = "What";
-            this.eventWhat.Click += new System.EventHandler(this.eventWhat_Click);
             // 
             // eventWhen
             // 
@@ -207,7 +206,6 @@ namespace ReflectiveCode.GMinder
             this.reminderFormTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.reminderFormTableLayoutPanel.Size = new System.Drawing.Size(459, 388);
             this.reminderFormTableLayoutPanel.TabIndex = 0;
-            this.reminderFormTableLayoutPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.eventTable_Paint);
             // 
             // agenda
             // 
@@ -225,7 +223,6 @@ namespace ReflectiveCode.GMinder
             this.agenda.UseCompatibleStateImageBehavior = false;
             this.agenda.View = System.Windows.Forms.View.Details;
             this.agenda.SelectedChanged += new System.EventHandler(this.HandleAgendaSelectionChanged);
-            this.agenda.SelectedIndexChanged += new System.EventHandler(this.agenda_SelectedIndexChanged);
             // 
             // reminderButtonsTableLayoutPanel
             // 
@@ -361,7 +358,10 @@ namespace ReflectiveCode.GMinder
             this.Name = "GReminder";
             this.Text = "GMinder";
             this.TopMost = global::ReflectiveCode.GMinder.Properties.Settings.Default.OnTop;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GReminder_FormClosing);
             this.Load += new System.EventHandler(this.GReminder_Load);
+            this.ResizeEnd += new System.EventHandler(this.GReminder_ResizeEnd);
+            this.Move += new System.EventHandler(this.GReminder_Move);
             this.trayMenu.ResumeLayout(false);
             this.reminderFormTableLayoutPanel.ResumeLayout(false);
             this.reminderFormTableLayoutPanel.PerformLayout();
