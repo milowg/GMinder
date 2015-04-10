@@ -41,9 +41,19 @@ namespace ReflectiveCode.GMinder
             InitializeComponent();
 
             foreach (var cal in Schedule.Current)
+            {
                 calendarList.Items.Add(cal);
-            if (calendarList.Items.Count > 0)
+                if (cal.Name == Properties.Settings.Default.LastQuickAdd)
+                {
+                    calendarList.SelectedItem = cal;
+                    break;
+                }
+            }
+            
+            if (calendarList.Items.Count > 0 && calendarList.SelectedIndex < 0)
+            {
                 calendarList.SelectedIndex = 0;
+            }
         }
 
         private void HandleKeyPress(object sender, KeyPressEventArgs e)
@@ -62,6 +72,9 @@ namespace ReflectiveCode.GMinder
             
             try
             {
+                Properties.Settings.Default.LastQuickAdd = calendar.Name;
+                Properties.Settings.Default.Save();
+
                 calendar.Create(newEventNameTextBox.Text);
                 Close();
             }

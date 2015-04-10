@@ -238,5 +238,17 @@ namespace ReflectiveCode.GMinder.Properties {
                 this["LoggedIn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastQuickAdd {
+            get {
+                return ((string)(this["LastQuickAdd"]));
+            }
+            set {
+                this["LastQuickAdd"] = value;
+            }
+        }
     }
 }
