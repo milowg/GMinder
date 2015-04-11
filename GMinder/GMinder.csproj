@@ -260,6 +260,7 @@
     </Compile>
     <Compile Include="Schedule.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="SolidColorBrush.cs" />
     <Compile Include="Storage.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Properties\Window.Designer.cs">
