@@ -238,5 +238,53 @@ namespace ReflectiveCode.GMinder.Properties {
                 this["LoggedIn"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastQuickAdd {
+            get {
+                return ((string)(this["LastQuickAdd"]));
+            }
+            set {
+                this["LastQuickAdd"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0, 0")]
+        public global::System.Drawing.Point WindowLocation {
+            get {
+                return ((global::System.Drawing.Point)(this["WindowLocation"]));
+            }
+            set {
+                this["WindowLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("467, 417")]
+        public global::System.Drawing.Size WindowSize {
+            get {
+                return ((global::System.Drawing.Size)(this["WindowSize"]));
+            }
+            set {
+                this["WindowSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdateSettings {
+            get {
+                return ((bool)(this["UpdateSettings"]));
+            }
+            set {
+                this["UpdateSettings"] = value;
+            }
+        }
     }
 }

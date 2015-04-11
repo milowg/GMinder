@@ -27,6 +27,7 @@
 
 using Google.Apis.Calendar.v3.Data;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ReflectiveCode.GMinder
@@ -41,9 +42,19 @@ namespace ReflectiveCode.GMinder
             InitializeComponent();
 
             foreach (var cal in Schedule.Current)
+            {
                 calendarList.Items.Add(cal);
-            if (calendarList.Items.Count > 0)
+                if (cal.Name == Properties.Settings.Default.LastQuickAdd)
+                {
+                    calendarList.SelectedItem = cal;
+                    break;
+                }
+            }
+            
+            if (calendarList.Items.Count > 0 && calendarList.SelectedIndex < 0)
+            {
                 calendarList.SelectedIndex = 0;
+            }
         }
 
         private void HandleKeyPress(object sender, KeyPressEventArgs e)
@@ -62,6 +73,9 @@ namespace ReflectiveCode.GMinder
             
             try
             {
+                Properties.Settings.Default.LastQuickAdd = calendar.Name;
+                Properties.Settings.Default.Save();
+
                 calendar.Create(newEventNameTextBox.Text);
                 Close();
             }
@@ -72,6 +86,27 @@ namespace ReflectiveCode.GMinder
                     "You may not have permission to edit the selected calendar."
                 );
             }
+        }
+
+        private void calendarList_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Calendar calendar = (Calendar)((ComboBox)sender).Items[e.Index];
+            string text = calendar.ToString();
+            
+            //Draw background first
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected &&
+                !((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit))
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Color.LightGray), e.Bounds);
+            }
+            else
+            {
+                e.Graphics.FillRectangle(new SolidBrush(calendarList.BackColor), e.Bounds);
+            }
+
+            //Next draw text
+            Brush brush = new SolidBrush(calendar.Color);
+            e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
         }
     }
 }

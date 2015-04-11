@@ -92,7 +92,9 @@
             // 
             this.calendarList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.calendarList.BackColor = System.Drawing.SystemColors.Window;
             this.CreateFormTableLayout.SetColumnSpan(this.calendarList, 2);
+            this.calendarList.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.calendarList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.calendarList.FormatString = "{Name}";
             this.calendarList.FormattingEnabled = true;
@@ -101,6 +103,7 @@
             this.calendarList.Name = "calendarList";
             this.calendarList.Size = new System.Drawing.Size(277, 21);
             this.calendarList.TabIndex = 1;
+            this.calendarList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.calendarList_DrawItem);
             // 
             // Create
             // 

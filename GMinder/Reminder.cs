@@ -22,6 +22,7 @@
 /// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 /// OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using ReflectiveCode.GMinder.Properties;
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -38,6 +39,7 @@ namespace ReflectiveCode.GMinder
 
         private bool _UserExit;
         private bool _OptionsLock;
+        private bool _locationLoaded = false;
 
         private bool Hidden
         {
@@ -73,7 +75,7 @@ namespace ReflectiveCode.GMinder
 
         public GReminder()
         {
-            InitializeComponent();
+            InitializeComponent();            
 
             //Make sure we are not on top of any browser or dialog that happens during the authorzation
             Calendar.StartingAuth += (sender, args) => { this.TopMost = false; };
@@ -424,24 +426,81 @@ namespace ReflectiveCode.GMinder
                 about.ShowDialog(this);
         }
 
-        private void eventWhat_Click(object sender, EventArgs e)
+        private void GReminder_Move(object sender, EventArgs e)
         {
-
+            SaveWindowLocation();
         }
 
-        private void agenda_SelectedIndexChanged(object sender, EventArgs e)
+        private void GReminder_ResizeEnd(object sender, EventArgs e)
         {
-
+            SaveWindowLocation();
         }
 
-        private void eventTable_Paint(object sender, PaintEventArgs e)
+        private void GReminder_FormClosing(object sender, FormClosingEventArgs e)
         {
+            SaveWindowLocation();
+        }
 
+        private void SaveWindowLocation()
+        {
+            if (!_locationLoaded)
+            {
+                return;
+            }
+
+            System.Diagnostics.Debug.WriteLine("Saving location " + this.Location);
+            // Copy window location to app settings
+            Settings.Default.WindowLocation = this.Location;
+
+            // Copy window size to app settings
+            if (this.WindowState == FormWindowState.Normal)
+            {
+                Settings.Default.WindowSize = this.Size;
+            }
+            else
+            {
+                Settings.Default.WindowSize = this.RestoreBounds.Size;
+            }
+
+            // Save settings
+            Settings.Default.Save();
+        }
+
+        private void EnsureVisible()
+        {
+            foreach (var screen in Screen.AllScreens)
+            {
+                if (screen.Bounds.IntersectsWith(this.Bounds))
+                {
+                    return;
+                }
+            }
+            //If we got this far we are not on a visible screen, so we show at 0,0
+            this.Location = new System.Drawing.Point(0, 0);
         }
 
         private void GReminder_Load(object sender, EventArgs e)
         {
+            //Load Window Location and Size
+            if (Settings.Default.WindowLocation != null)
+            {
+                this.Location = Settings.Default.WindowLocation;
+                EnsureVisible();
+            }
 
+            if (Settings.Default.WindowSize != null)
+            {
+                this.Size = Settings.Default.WindowSize;
+                //Set minimum size
+                if (this.Size.Width < 10 || this.Size.Height < 10)
+                {
+                    this.Size = new System.Drawing.Size(
+                        Math.Max(this.Size.Width, 10),
+                        Math.Max(this.Size.Height, 10));
+                }
+            }
+            _locationLoaded = true;
         }
+
     }
 }

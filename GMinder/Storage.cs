@@ -22,6 +22,7 @@
 /// OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 /// OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using System;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Text;
@@ -57,11 +58,22 @@ namespace ReflectiveCode.GMinder
         public static void SaveObject(string path, object value)
         {
             var serializer = new XmlSerializer(value.GetType());
-            using (var stream = new IsolatedStorageFileStream(path, FileMode.Create))
+            using (var stream = new FileStream(GetStorageFolderPath(path), FileMode.Create))
             {
                 serializer.Serialize(new XmlTextWriter(stream, Encoding.Unicode), value);
                 stream.Flush();
             }
+        }
+
+        private static String GetStorageFolderPath(string path)
+        {
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            DirectoryInfo storageFolder = new DirectoryInfo(appDataPath + @"\GMinder");
+            if (!storageFolder.Exists)
+            {
+                storageFolder.Create();
+            }
+            return Path.Combine(storageFolder.ToString(), path);
         }
 
         public static T LoadObject<T>(string path)
@@ -69,7 +81,7 @@ namespace ReflectiveCode.GMinder
             var serializer = new XmlSerializer(typeof(T));
             try
             {
-                using (var stream = new IsolatedStorageFileStream(path, FileMode.Open))
+                using (var stream = new FileStream(GetStorageFolderPath(path), FileMode.Open))
                     return (T)serializer.Deserialize(new XmlTextReader(stream));
             }
             catch (FileNotFoundException)
