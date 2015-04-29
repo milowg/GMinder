@@ -34,14 +34,44 @@ namespace ReflectiveCode.GMinder.Controls
             ListViewItemSorter = new AgendaComparer();
             ForeColor = Color.Black;
 
-            Schedule.Current.Redrawing += (sender, e) => Reset();
-            Schedule.Current.BeginningUpdate += (sender, e) => SafeBeginUpdate();
-            Schedule.Current.EndingUpdate += (sender, e) => SafeEndUpdate();
-            Schedule.Current.GventAdded += (sender, e) => Add(e.Gvent);
-            Schedule.Current.GventRemoved += (sender, e) => Remove(e.Gvent);
-            Schedule.Current.GventChanged += (sender, e) => UpdateGvent(e.Gvent, e.Changes);
+            Schedule.Current.Redrawing += RedrawingHandler;
+            Schedule.Current.BeginningUpdate += BeginningUpdateHandler;
+            Schedule.Current.EndingUpdate += EndingUpdateHandler;
+            Schedule.Current.GventAdded += GventAddedHandler;
+            Schedule.Current.GventRemoved += GventRemovedHandler;
+            Schedule.Current.GventChanged += GventChangedHandler;
 
             Reset();
+        }
+
+        public void RedrawingHandler(object sender, EventArgs e)
+        {
+            Reset();
+        }
+
+        public void BeginningUpdateHandler(object sender, EventArgs e)
+        {
+            SafeBeginUpdate();
+        }
+
+        public void EndingUpdateHandler(object sender, EventArgs e)
+        {
+            SafeEndUpdate();
+        }
+
+        public void GventAddedHandler(object sender, GventEventArgs e)
+        {
+            Add(e.Gvent);
+        }
+
+        public void GventRemovedHandler(object sender, GventEventArgs e)
+        {
+            Remove(e.Gvent);
+        }
+
+        public void GventChangedHandler(object sender, GventEventArgs e)
+        {
+            UpdateGvent(e.Gvent, e.Changes);
         }
 
         /// <summary>
@@ -473,12 +503,12 @@ namespace ReflectiveCode.GMinder.Controls
 
         protected override void Dispose(bool disposing)
         {
-            Schedule.Current.Redrawing -= (sender, e) => Reset();
-            Schedule.Current.BeginningUpdate -= (sender, e) => SafeBeginUpdate();
-            Schedule.Current.EndingUpdate -= (sender, e) => SafeEndUpdate();
-            Schedule.Current.GventAdded -= (sender, e) => Add(e.Gvent);
-            Schedule.Current.GventRemoved -= (sender, e) => Remove(e.Gvent);
-            Schedule.Current.GventChanged -= (sender, e) => UpdateGvent(e.Gvent, e.Changes);
+            Schedule.Current.Redrawing -= RedrawingHandler;
+            Schedule.Current.BeginningUpdate -= BeginningUpdateHandler;
+            Schedule.Current.EndingUpdate -= EndingUpdateHandler;
+            Schedule.Current.GventAdded -= GventAddedHandler;
+            Schedule.Current.GventRemoved -= GventRemovedHandler;
+            Schedule.Current.GventChanged -= GventChangedHandler;
 
             base.Dispose(disposing);
         }
