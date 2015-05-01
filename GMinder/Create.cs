@@ -32,12 +32,12 @@ using System.Windows.Forms;
 
 namespace ReflectiveCode.GMinder
 {
-    public partial class Create : Form
+    public partial class Create : PositionalForm
     {
         const char ENTER_KEYCHAR = (char)13;
         const char ESCAPE_KEYCHAR = (char)27;
-
-        public Create()
+        
+        public Create() : base(null, "CreateWindowLocation")
         {
             InitializeComponent();
 
@@ -76,7 +76,8 @@ namespace ReflectiveCode.GMinder
                 Properties.Settings.Default.LastQuickAdd = calendar.Name;
                 Properties.Settings.Default.Save();
 
-                calendar.Create(newEventNameTextBox.Text);
+                String quickTxt = String.Format("{0} {1}", newEventNameTextBox.Text, (dtPicker.Checked ? dtPicker.Value.ToShortDateString() : ""));
+                calendar.Create(quickTxt);
                 Close();
             }
             catch (Exception ex)
@@ -108,5 +109,6 @@ namespace ReflectiveCode.GMinder
             Brush brush = new SolidBrush(calendar.Color);
             e.Graphics.DrawString(text, ((Control)sender).Font, brush, e.Bounds.X, e.Bounds.Y);
         }
+
     }
 }

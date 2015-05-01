@@ -358,10 +358,6 @@ namespace ReflectiveCode.GMinder
             this.Name = "GReminder";
             this.Text = "GMinder";
             this.TopMost = global::ReflectiveCode.GMinder.Properties.Settings.Default.OnTop;
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GReminder_FormClosing);
-            this.Load += new System.EventHandler(this.GReminder_Load);
-            this.ResizeEnd += new System.EventHandler(this.GReminder_ResizeEnd);
-            this.Move += new System.EventHandler(this.GReminder_Move);
             this.trayMenu.ResumeLayout(false);
             this.reminderFormTableLayoutPanel.ResumeLayout(false);
             this.reminderFormTableLayoutPanel.PerformLayout();
