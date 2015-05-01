@@ -34,6 +34,7 @@
             this.newEventNameTextBox = new System.Windows.Forms.TextBox();
             this.exampleLabel = new System.Windows.Forms.Label();
             this.calendarList = new System.Windows.Forms.ComboBox();
+            this.dtPicker = new System.Windows.Forms.DateTimePicker();
             this.CreateFormTableLayout.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,16 +47,18 @@
             this.CreateFormTableLayout.Controls.Add(this.addButton, 1, 1);
             this.CreateFormTableLayout.Controls.Add(this.newEventNameTextBox, 0, 1);
             this.CreateFormTableLayout.Controls.Add(this.exampleLabel, 0, 0);
-            this.CreateFormTableLayout.Controls.Add(this.calendarList, 0, 2);
+            this.CreateFormTableLayout.Controls.Add(this.calendarList, 0, 3);
+            this.CreateFormTableLayout.Controls.Add(this.dtPicker, 0, 2);
             this.CreateFormTableLayout.Dock = System.Windows.Forms.DockStyle.Top;
             this.CreateFormTableLayout.Location = new System.Drawing.Point(0, 0);
             this.CreateFormTableLayout.Name = "CreateFormTableLayout";
             this.CreateFormTableLayout.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            this.CreateFormTableLayout.RowCount = 3;
+            this.CreateFormTableLayout.RowCount = 4;
+            this.CreateFormTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.CreateFormTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.CreateFormTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.CreateFormTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.CreateFormTableLayout.Size = new System.Drawing.Size(337, 72);
+            this.CreateFormTableLayout.Size = new System.Drawing.Size(337, 98);
             this.CreateFormTableLayout.TabIndex = 0;
             // 
             // addButton
@@ -64,7 +67,7 @@
             this.addButton.Location = new System.Drawing.Point(259, 21);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(75, 23);
-            this.addButton.TabIndex = 2;
+            this.addButton.TabIndex = 3;
             this.addButton.Text = "Add";
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.HandleAddButton);
@@ -98,19 +101,32 @@
             this.calendarList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.calendarList.FormatString = "{Name}";
             this.calendarList.FormattingEnabled = true;
-            this.calendarList.Location = new System.Drawing.Point(30, 50);
+            this.calendarList.Location = new System.Drawing.Point(30, 76);
             this.calendarList.Margin = new System.Windows.Forms.Padding(30, 3, 30, 3);
             this.calendarList.Name = "calendarList";
             this.calendarList.Size = new System.Drawing.Size(277, 21);
-            this.calendarList.TabIndex = 1;
+            this.calendarList.TabIndex = 2;
             this.calendarList.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.calendarList_DrawItem);
+            // 
+            // dtPicker
+            // 
+            this.dtPicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtPicker.Checked = false;
+            this.CreateFormTableLayout.SetColumnSpan(this.dtPicker, 2);
+            this.dtPicker.Location = new System.Drawing.Point(30, 50);
+            this.dtPicker.Margin = new System.Windows.Forms.Padding(30, 3, 30, 3);
+            this.dtPicker.Name = "dtPicker";
+            this.dtPicker.ShowCheckBox = true;
+            this.dtPicker.Size = new System.Drawing.Size(277, 20);
+            this.dtPicker.TabIndex = 1;
             // 
             // Create
             // 
             this.AcceptButton = this.addButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(337, 81);
+            this.ClientSize = new System.Drawing.Size(337, 101);
             this.Controls.Add(this.CreateFormTableLayout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -132,5 +148,6 @@
         private System.Windows.Forms.TextBox newEventNameTextBox;
         private System.Windows.Forms.Label exampleLabel;
         private System.Windows.Forms.ComboBox calendarList;
+        private System.Windows.Forms.DateTimePicker dtPicker;
     }
 }

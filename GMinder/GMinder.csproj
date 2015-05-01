@@ -186,6 +186,9 @@
     <Compile Include="AgendaComparer.cs" />
     <Compile Include="GVentMinder.cs" />
     <Compile Include="Logging.cs" />
+    <Compile Include="PositionalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Preview.cs">
       <SubType>Form</SubType>
     </Compile>

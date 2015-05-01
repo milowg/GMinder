@@ -29,7 +29,7 @@ using System.Windows.Forms;
 
 namespace ReflectiveCode.GMinder
 {
-    public partial class GReminder : Form
+    public partial class GReminder : PositionalForm
     {
         public const string REMINDER_TYPE_EMAIL = "email";
         public const string REMINDER_TYPE_SMS = "sms";
@@ -39,7 +39,6 @@ namespace ReflectiveCode.GMinder
 
         private bool _UserExit;
         private bool _OptionsLock;
-        private bool _locationLoaded = false;
 
         private bool Hidden
         {
@@ -73,7 +72,7 @@ namespace ReflectiveCode.GMinder
             }
         }
 
-        public GReminder()
+        public GReminder() : base("WindowSize", "WindowLocation")
         {
             InitializeComponent();            
 
@@ -424,82 +423,6 @@ namespace ReflectiveCode.GMinder
         {
             using (var about = new About())
                 about.ShowDialog(this);
-        }
-
-        private void GReminder_Move(object sender, EventArgs e)
-        {
-            SaveWindowLocation();
-        }
-
-        private void GReminder_ResizeEnd(object sender, EventArgs e)
-        {
-            SaveWindowLocation();
-        }
-
-        private void GReminder_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveWindowLocation();
-        }
-
-        private void SaveWindowLocation()
-        {
-            if (!_locationLoaded)
-            {
-                return;
-            }
-
-            System.Diagnostics.Debug.WriteLine("Saving location " + this.Location);
-            // Copy window location to app settings
-            Settings.Default.WindowLocation = this.Location;
-
-            // Copy window size to app settings
-            if (this.WindowState == FormWindowState.Normal)
-            {
-                Settings.Default.WindowSize = this.Size;
-            }
-            else
-            {
-                Settings.Default.WindowSize = this.RestoreBounds.Size;
-            }
-
-            // Save settings
-            Settings.Default.Save();
-        }
-
-        private void EnsureVisible()
-        {
-            foreach (var screen in Screen.AllScreens)
-            {
-                if (screen.Bounds.IntersectsWith(this.Bounds))
-                {
-                    return;
-                }
-            }
-            //If we got this far we are not on a visible screen, so we show at 0,0
-            this.Location = new System.Drawing.Point(0, 0);
-        }
-
-        private void GReminder_Load(object sender, EventArgs e)
-        {
-            //Load Window Location and Size
-            if (Settings.Default.WindowLocation != null)
-            {
-                this.Location = Settings.Default.WindowLocation;
-                EnsureVisible();
-            }
-
-            if (Settings.Default.WindowSize != null)
-            {
-                this.Size = Settings.Default.WindowSize;
-                //Set minimum size
-                if (this.Size.Width < 10 || this.Size.Height < 10)
-                {
-                    this.Size = new System.Drawing.Size(
-                        Math.Max(this.Size.Width, 10),
-                        Math.Max(this.Size.Height, 10));
-                }
-            }
-            _locationLoaded = true;
         }
 
     }
