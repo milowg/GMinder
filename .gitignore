@@ -49,3 +49,9 @@ UpgradeLog.XML
 
 #Secret Key Info
 GMinderClientSecrets.cs
+
+#Deployment
+Deployment/GMinder*.msi
+Deployment/GMinder*.zip
+Deployment/GMinder.wixobj
+Deployment/GMinder.wixpdb
