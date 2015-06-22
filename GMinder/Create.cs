@@ -47,7 +47,6 @@ namespace ReflectiveCode.GMinder
                 if (cal.Name == Properties.Settings.Default.LastQuickAdd)
                 {
                     calendarList.SelectedItem = cal;
-                    break;
                 }
             }
             
