@@ -202,7 +202,7 @@ namespace ReflectiveCode.GMinder
             if (entry == null)
                 throw new ArgumentNullException("entry");
 
-            _Id = entry.HtmlLink;
+            _Id = entry.Id;
             this.Calendar = calendar;
             Update(entry);
         }
@@ -229,7 +229,7 @@ namespace ReflectiveCode.GMinder
 
         public bool Update(Event entry)
         {
-            if (entry.HtmlLink != Id)
+            if (entry.Id != Id)
                 return false;
 
             Title = entry.Summary;
