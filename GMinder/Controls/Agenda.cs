@@ -108,6 +108,10 @@ namespace ReflectiveCode.GMinder.Controls
         /// <param name="item">item to add</param>
         private void Add(ListViewItem item)
         {
+            if (item.Text == "")
+            {
+                return;
+            }
             var gvent = GetGventFromItem(item);
 
             // Get matching header
@@ -115,6 +119,23 @@ namespace ReflectiveCode.GMinder.Controls
 
             // Add the item into the list
             item.Group = header.Group;
+
+            //See if this is already in the listview
+            foreach (ListViewItem existingItem in Items) {
+                if (!(existingItem.Tag is Gvent))
+                {
+                    continue;
+                }
+
+                var existingGvent = (Gvent)existingItem.Tag;
+                if (existingGvent.Title == gvent.Title &&
+                    existingGvent.Start == gvent.Start)
+                {
+                    //This is already in the list, do not re-add. 
+                    //NOTE: This is for backwards compatibility. Older versions stored the URL of the event as the ID (and the URL can be different for the same event).
+                    return;
+                }
+            }
             Items.Add(item);
         }
 
