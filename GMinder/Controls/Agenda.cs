@@ -355,6 +355,7 @@ namespace ReflectiveCode.GMinder.Controls
                     {
                         ListViewItem item = _Gvents[gvent];
                         Remove(item);
+                        ItemUpdate(item);
                         Add(item);
                     }
                     return;
