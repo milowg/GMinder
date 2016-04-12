@@ -28,6 +28,7 @@ using System.IO;
 using System.Speech;
 using System.Speech.Synthesis;
 using System.Text;
+using System.Threading;
 
 namespace ReflectiveCode.GMinder
 {
@@ -104,11 +105,18 @@ namespace ReflectiveCode.GMinder
             }
         }
 
-        public static void Speak(Gvent gvent)
+        public static void Speak(Gvent gvent) {
+            WaitCallback callback = delegate(object o) { SpeakThread((Gvent)o); };
+            ThreadPool.QueueUserWorkItem(callback, gvent);
+        }
+
+        private static void SpeakThread(Gvent gvent)
         {
+
             StringBuilder spoken = new StringBuilder(gvent.Title);
             DateTime Now = DateTime.Now;
             TimeSpan timespan;
+            Boolean postfix = true;
 
             if (gvent.Start > Now)
             {
@@ -116,7 +124,10 @@ namespace ReflectiveCode.GMinder
                 if (timespan.Days != 0 || timespan.Hours != 0 || timespan.Minutes != 0)
                     spoken.Append(" starts in ");
                 else
+                {
+                    postfix = false;
                     spoken.Append(" starts soon!");
+                }
             }
             else
             {
@@ -124,7 +135,10 @@ namespace ReflectiveCode.GMinder
                 if (timespan.Days != 0 || timespan.Hours != 0 || timespan.Minutes != 0)
                     spoken.Append(" started ");
                 else
+                {
+                    postfix = false;
                     spoken.Append(" starts now!");
+                }
             }
 
             if (timespan.Days > 0)
@@ -175,12 +189,18 @@ namespace ReflectiveCode.GMinder
                 }
             }
 
-            if (gvent.Start > Now)
-                spoken.Append('!');
-            else
-                spoken.Append(" ago!");
+            if (postfix)
+            {
+                if (gvent.Start > Now)
+                    spoken.Append('!');
+                else
+                    spoken.Append(" ago!");
+            }
 
-            voice.Speak(spoken.ToString());
+            lock (voice)
+            {
+                voice.Speak(spoken.ToString());
+            }
         }
     }
 }
