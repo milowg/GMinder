@@ -278,6 +278,7 @@ namespace ReflectiveCode.GMinder
                     //Do nothing. Use the defaults we already have
                 }
 
+                _fetchedEvents.Clear();
                 EventsResource.ListRequest Fetcher = _Service.Events.List(this.ID);
                 Fetcher.SingleEvents = true;
                 Fetcher.TimeMin = DateTime.Today;
@@ -339,7 +340,7 @@ namespace ReflectiveCode.GMinder
                     if (!matched)
                         Add(new Gvent(entry, this));
                 }
-
+                _fetchedEvents.Clear();
                 if (!DownloadError)
                 {
                     // Remove events that were not updated

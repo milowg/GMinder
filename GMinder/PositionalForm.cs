@@ -18,6 +18,9 @@ namespace ReflectiveCode.GMinder
         private String _windowLocationSetting = null;
         private bool _locationLoaded = false;
 
+        //Default constructor for use in Form Designer
+        public PositionalForm() { }
+
         //Requires settings properties to remember and save last position
         public PositionalForm(String windowSizeSetting, String windowLocationSetting)
         {
@@ -31,7 +34,7 @@ namespace ReflectiveCode.GMinder
             base.OnLoad(e);
 
             //Load Window Location
-            if (Properties.Settings.Default[_windowLocationSetting] != null)
+            if (_windowLocationSetting != null && Properties.Settings.Default[_windowLocationSetting] != null)
             {
                 this.Location = (Point)Properties.Settings.Default[_windowLocationSetting];
                 EnsureVisible();
