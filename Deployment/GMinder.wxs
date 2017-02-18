@@ -2,10 +2,10 @@
 <Wix xmlns='http://schemas.microsoft.com/wix/2006/wi' xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
 	<?include "source.wxi"?>
 
-	<Product Name='GMinder 1.4.0.6' Id='*' UpgradeCode='230C4B64-F983-4630-B427-D1EAE885FD62'
-    Language='1033' Codepage='1252' Version='1.4.0.6' Manufacturer='GMinder'>
+	<Product Name='GMinder 1.4.0.7' Id='*' UpgradeCode='230C4B64-F983-4630-B427-D1EAE885FD62'
+    Language='1033' Codepage='1252' Version='1.4.0.7' Manufacturer='GMinder'>
 
-		<Package Id='*' Keywords='Installer' Description="GMinder 1.4.0.6 Installer"
+		<Package Id='*' Keywords='Installer' Description="GMinder 1.4.0.7 Installer"
       Comments='Google Calendar Reminder' Manufacturer='GMinder'
       InstallerVersion='300' Languages='1033' Compressed='yes' SummaryCodepage='1252' />
 		<Media Id="1" Cabinet="gminder.cab" EmbedCab="yes"/>
