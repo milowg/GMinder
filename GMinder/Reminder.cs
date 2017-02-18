@@ -89,7 +89,7 @@ namespace ReflectiveCode.GMinder
             Selected = null;
             Schedule.Current.GventChanged += (sender, e) =>
             {
-                if (e.Changes == GventChanges.Status)
+                if (e.Changes == GventChanges.Status) 
                     StatusAlert(e.Gvent);
             };
             if (Schedule.Current.Count == 0)
@@ -132,30 +132,37 @@ namespace ReflectiveCode.GMinder
 
         private void StatusAlert(Gvent gvent)
         {
-            switch (gvent.Status)
+            try
             {
-                case GventStatus.Soon:
-                    if (Properties.Settings.Default.SoonPopup)
-                        Hidden = false;
-                    if (Properties.Settings.Default.SoonSound)
-                        Sound.MakeSound(Properties.Settings.Default.SoundPath);
-                    if (Properties.Settings.Default.SoonVerbal)
-                        Sound.Speak(gvent);
-                    return;
+                switch (gvent.Status)
+                {
+                    case GventStatus.Soon:
+                        if (Properties.Settings.Default.SoonPopup)
+                            Hidden = false;
+                        if (Properties.Settings.Default.SoonSound)
+                            Sound.MakeSound(Properties.Settings.Default.SoundPath);
+                        if (Properties.Settings.Default.SoonVerbal)
+                            Sound.Speak(gvent);
+                        return;
 
-                case GventStatus.Now:
-                    if (Properties.Settings.Default.NowPopup)
-                        Hidden = false;
-                    if (Properties.Settings.Default.NowSound)
-                        Sound.MakeSound(Properties.Settings.Default.SoundPath);
-                    if (Properties.Settings.Default.NowVerbal)
-                        Sound.Speak(gvent);
-                    return;
+                    case GventStatus.Now:
+                        if (Properties.Settings.Default.NowPopup)
+                            Hidden = false;
+                        if (Properties.Settings.Default.NowSound)
+                            Sound.MakeSound(Properties.Settings.Default.SoundPath);
+                        if (Properties.Settings.Default.NowVerbal)
+                            Sound.Speak(gvent);
+                        return;
 
-                case GventStatus.Past:
-                    if (Properties.Settings.Default.PastDismiss)
-                        gvent.Dismiss();
-                    return;
+                    case GventStatus.Past:
+                        if (Properties.Settings.Default.PastDismiss)
+                            gvent.Dismiss();
+                        return;
+                }
+            }
+            catch (Exception e)
+            {
+                //Swallow exception to avoid any issues painting, etc
             }
         }
 
