@@ -24,6 +24,7 @@
 
 using ReflectiveCode.GMinder.Properties;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -60,16 +61,29 @@ namespace ReflectiveCode.GMinder
             }
         }
 
-        private Gvent _Selected;
-        public Gvent Selected
-        {
-            get { return _Selected; }
-            set
+        private List<Gvent> _Selected = new List<Gvent>();
+        public List<Gvent> Selected {
+            get
             {
-                _Selected = value;
-                DisplayEventDetails(value);
-                dismissButton.Enabled = openButton.Enabled = (_Selected != null);
+                //Create a copy since this list can change due to things like dismissal
+                List<Gvent> selected = new List<Gvent>();
+                foreach (var selectedItem in _Selected) 
+                {
+                    selected.Add(selectedItem);
+                }
+                return selected;
             }
+        }
+
+        public void SetSelected(List<Gvent> selected) {
+            _Selected.Clear();
+            if (selected != null) {
+                foreach (var gvent in selected)
+                {
+                    _Selected.Add(gvent);
+                }
+            }
+            DisplayEventDetails(); 
         }
 
         public GReminder() : base("WindowSize", "WindowLocation")
@@ -86,7 +100,7 @@ namespace ReflectiveCode.GMinder
                 Schedule.Current.Load();
             }
             
-            Selected = null;
+            SetSelected(null);
             Schedule.Current.GventChanged += (sender, e) =>
             {
                 if (e.Changes == GventChanges.Status) 
@@ -323,7 +337,7 @@ namespace ReflectiveCode.GMinder
 
         private void HandleAgendaSelectionChanged(object sender, EventArgs e)
         {
-            Selected = agenda.Selected;
+            SetSelected(agenda.Selected);
         }
         
         #endregion
@@ -331,12 +345,28 @@ namespace ReflectiveCode.GMinder
 
         #region Event Panel
 
-        private void DisplayEventDetails(Gvent gvent)
+        private void DisplayEventDetails()
         {
             reminderFormTableLayoutPanel.SuspendLayout();
 
-            if (gvent != null)
+            openButton.Enabled = (_Selected.Count == 1);
+            dismissButton.Enabled = (_Selected.Count > 0); 
+
+            if (_Selected.Count == 0)
             {
+                eventWhat.Text = null;
+                eventWhen.Text = "No event selected";
+                eventWhere.Text = null;
+            } 
+            else if (_Selected.Count > 1)
+            {
+                eventWhat.Text = null;
+                eventWhen.Text = string.Format("{0} events selected", _Selected.Count);
+                eventWhere.Text = null;
+            }
+            else { 
+                Gvent gvent = _Selected[0];
+
                 // Title
                 eventWhat.Text = gvent.Title;
 
@@ -368,12 +398,6 @@ namespace ReflectiveCode.GMinder
                 // Location
                 eventWhere.Text = gvent.Location;
             }
-            else
-            {
-                eventWhat.Text = null;
-                eventWhen.Text = "No event selected";
-                eventWhere.Text = null;
-            }
 
             reminderFormTableLayoutPanel.ResumeLayout();
         }
@@ -383,14 +407,16 @@ namespace ReflectiveCode.GMinder
 
         private void HandleOpenButton(object sender, EventArgs e)
         {
-            if (Selected != null)
-                Selected.OpenBrowser();
+            if (Selected.Count == 1)
+                Selected[0].OpenBrowser();
         }
 
         private void HandleDismissClick(object sender, EventArgs e)
         {
-            if (Selected != null)
-                Selected.Dismiss();
+            foreach (var selectedItem in Selected)
+            {
+                selectedItem.Dismiss();
+            }
         }
 
         private void HandleSnoozeKeyPress(object sender, KeyPressEventArgs e)
