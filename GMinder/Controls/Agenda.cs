@@ -29,7 +29,7 @@ namespace ReflectiveCode.GMinder.Controls
             FullRowSelect = true;
             HeaderStyle = ColumnHeaderStyle.None;
             HideSelection = false;
-            MultiSelect = false;
+            MultiSelect = true;
             View = View.Details;
             ListViewItemSorter = new AgendaComparer();
             ForeColor = Color.Black;
@@ -439,13 +439,18 @@ namespace ReflectiveCode.GMinder.Controls
             return String.Format("{0} Months", months);
         }
 
-        public Gvent Selected
+        public List<Gvent> Selected
         {
             get
             {
-                if (SelectedItems.Count > 0 && IsGvent(SelectedItems[0]))
-                    return GetGventFromItem(SelectedItems[0]);
-                else return null;
+                List<Gvent> selectedItems = new List<Gvent>();
+
+                foreach (ListViewItem selectedItem in SelectedItems)
+                {
+                    if (IsGvent(selectedItem))
+                        selectedItems.Add(GetGventFromItem(selectedItem));
+                }
+                return selectedItems;
             }
         }
 
@@ -509,17 +514,24 @@ namespace ReflectiveCode.GMinder.Controls
 
         protected override void OnItemActivate(EventArgs e)
         {
-            if (Selected != null)
-                Selected.OpenBrowser();
+            if (Selected.Count == 1)
+                Selected[0].OpenBrowser();
 
             base.OnItemActivate(e);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if (Selected != null)
+            if (Selected.Count > 0)
+            {
                 if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
-                    Selected.Dismiss();
+                {
+                    foreach (var selectedItem in Selected)
+                    {
+                        selectedItem.Dismiss();
+                    }
+                }
+            }
             base.OnKeyDown(e);
         }
 

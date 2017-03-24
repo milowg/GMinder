@@ -216,7 +216,6 @@ namespace ReflectiveCode.GMinder
             this.agenda.HideSelection = false;
             this.agenda.Location = new System.Drawing.Point(0, 53);
             this.agenda.Margin = new System.Windows.Forms.Padding(0);
-            this.agenda.MultiSelect = false;
             this.agenda.Name = "agenda";
             this.agenda.Size = new System.Drawing.Size(459, 306);
             this.agenda.TabIndex = 3;
